@@ -1,0 +1,13 @@
+@reference "../globals.css";
+
+.authSection {
+  @apply ml-auto flex gap-2;
+}
+
+.userEmail {
+  @apply opacity-70;
+}
+
+.registerLink {
+  @apply font-semibold;
+}

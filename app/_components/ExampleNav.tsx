@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { auth } from "@/auth";
+import styles from "./ExampleNav.module.css";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -10,7 +12,9 @@ const navItems = [
   { href: "/use-client", label: "use client" },
 ];
 
-export default function ExampleNav() {
+export default async function ExampleNav() {
+  const session = await auth();
+
   return (
     <nav className="nav">
       <div className="nav-content">
@@ -23,6 +27,27 @@ export default function ExampleNav() {
             {item.label}
           </Link>
         ))}
+        <div className={styles.authSection}>
+          {session?.user ? (
+            <>
+              <Link href="/dashboard" className="nav-link">
+                Dashboard
+              </Link>
+              <span className={`nav-link ${styles.userEmail}`}>
+                {session.user.email}
+              </span>
+            </>
+          ) : (
+            <>
+              <Link href="/auth/login" className="nav-link">
+                Login
+              </Link>
+              <Link href="/auth/register" className={`nav-link ${styles.registerLink}`}>
+                Register
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );

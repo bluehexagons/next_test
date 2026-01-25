@@ -1,0 +1,37 @@
+@reference "../../globals.css";
+
+.container {
+  @apply flex min-h-screen items-center justify-center;
+}
+
+.card {
+  @apply w-full max-w-md space-y-8 rounded-lg border p-8;
+}
+
+.header {
+  @apply text-center text-3xl font-bold;
+}
+
+.subtitle {
+  @apply mt-2 text-center text-sm text-gray-600;
+}
+
+.link {
+  @apply text-blue-600 hover:underline;
+}
+
+.form {
+  @apply mt-8 space-y-6;
+}
+
+.successMessage {
+  @apply rounded-md bg-green-50 p-4 text-sm text-green-800;
+}
+
+.errorMessage {
+  @apply rounded-md bg-red-50 p-4 text-sm text-red-800;
+}
+
+.formFields {
+  @apply space-y-4;
+}

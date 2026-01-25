@@ -1,0 +1,25 @@
+@reference "../globals.css";
+
+.input {
+  @apply mt-1 w-full rounded-md border px-3 py-2;
+}
+
+.input:focus {
+  @apply outline-none ring-2 ring-blue-500 border-transparent;
+}
+
+.label {
+  @apply block text-sm font-medium;
+}
+
+.helpText {
+  @apply mt-1 text-xs text-gray-500;
+}
+
+.errorText {
+  @apply mt-1 text-xs text-red-600;
+}
+
+.fieldWrapper {
+  @apply space-y-1;
+}

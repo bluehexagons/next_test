@@ -1,0 +1,29 @@
+@reference "../globals.css";
+
+.button {
+  @apply rounded-md px-4 py-2 font-medium transition-colors;
+}
+
+.primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+.secondary {
+  @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
+}
+
+.danger {
+  @apply bg-red-600 text-white hover:bg-red-700;
+}
+
+.outline {
+  @apply border border-gray-300 bg-transparent hover:bg-gray-50;
+}
+
+.fullWidth {
+  @apply w-full;
+}
+
+.disabled {
+  @apply opacity-50 cursor-not-allowed;
+}

@@ -1,0 +1,49 @@
+@reference "../globals.css";
+
+.container {
+  @apply min-h-screen p-8;
+}
+
+.wrapper {
+  @apply mx-auto max-w-4xl;
+}
+
+.header {
+  @apply mb-8 flex items-center justify-between;
+}
+
+.title {
+  @apply text-3xl font-bold;
+}
+
+.welcomeCard {
+  @apply rounded-lg border p-6;
+}
+
+.welcomeTitle {
+  @apply mb-4 text-xl font-semibold;
+}
+
+.userInfo {
+  @apply space-y-2;
+}
+
+.label {
+  @apply font-medium;
+}
+
+.description {
+  @apply mt-4 text-sm text-gray-600;
+}
+
+.nextStepsCard {
+  @apply mt-6 rounded-lg bg-blue-50 p-6;
+}
+
+.nextStepsTitle {
+  @apply mb-2 font-semibold;
+}
+
+.nextStepsList {
+  @apply list-inside list-disc space-y-1 text-sm;
+}

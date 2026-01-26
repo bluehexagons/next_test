@@ -54,7 +54,7 @@ body {
 
   /* Card component */
   .card {
-    @apply rounded-xl border border-zinc-200 bg-white p-4 transition hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900;
+    @apply cursor-pointer rounded-xl border border-zinc-200 bg-white p-4 transition hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900;
   }
 
   .card-title {
@@ -135,7 +135,7 @@ body {
   }
 
   .photo-card {
-    @apply rounded-xl border border-zinc-200 bg-white p-4 text-center transition hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-600;
+    @apply cursor-pointer rounded-xl border border-zinc-200 bg-white p-4 text-center transition hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-600;
   }
 
   /* Navigation */
@@ -148,6 +148,6 @@ body {
   }
 
   .nav-link {
-    @apply rounded-full px-3 py-1 transition hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-white;
+    @apply cursor-pointer rounded-full px-3 py-1 transition hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-white;
   }
 }

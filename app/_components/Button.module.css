@@ -1,7 +1,7 @@
 @reference "../globals.css";
 
 .button {
-  @apply rounded-md px-4 py-2 font-medium transition-colors;
+  @apply cursor-pointer rounded-md px-4 py-2 font-medium transition-colors;
 }
 
 .primary {

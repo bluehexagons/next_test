@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, uniqueIndex } from 'drizzle-orm/sqlite-core';
 import { relations } from 'drizzle-orm';
 
 export const users = sqliteTable('users', {
@@ -52,6 +52,7 @@ export const verificationTokens = sqliteTable('verification_tokens', {
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
+  entities: many(entities),
 }));
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -68,8 +69,41 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
   }),
 }));
 
+// Entities table for clicker game
+export const entities = sqliteTable('entities', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  userId: integer('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  kind: text('kind').notNull(),
+  count: integer('count').notNull().default(0),
+  createdTime: integer('created_time', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  modifiedTime: integer('modified_time', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer('updated_at', { mode: 'timestamp' })
+    .notNull()
+    .$defaultFn(() => new Date()),
+}, (table) => ({
+  userIdKindIdx: uniqueIndex('entities_user_id_kind_unique').on(table.userId, table.kind),
+}));
+
+export const entitiesRelations = relations(entities, ({ one }) => ({
+  user: one(users, {
+    fields: [entities.userId],
+    references: [users.id],
+  }),
+}));
+
 // Type exports
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type Session = typeof sessions.$inferSelect;
 export type Account = typeof accounts.$inferSelect;
+export type Entity = typeof entities.$inferSelect;
+export type NewEntity = typeof entities.$inferInsert;

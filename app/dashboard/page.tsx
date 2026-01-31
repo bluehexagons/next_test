@@ -47,6 +47,11 @@ export default async function DashboardPage() {
         <div className={styles.nextStepsCard}>
           <h3 className={styles.nextStepsTitle}>What&apos;s next?</h3>
           <ul className={styles.nextStepsList}>
+            <li>
+              <a href="/clicker" style={{ color: 'var(--primary-color, #9a43ff)', textDecoration: 'none' }}>
+                Try the Minimal Clicker game
+              </a>
+            </li>
             <li>Add more protected routes under /dashboard</li>
             <li>Create user profile management</li>
             <li>Add role-based access control</li>

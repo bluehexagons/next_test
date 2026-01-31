@@ -90,6 +90,8 @@ export default function ClickerGame() {
   });
 
   // Update streaks when clicking
+  // Note: This is a simplified streak system that increments based on time elapsed
+  // A more robust implementation would reset streaks if periods are skipped
   const updateStreaks = () => {
     const now = new Date();
     const lastUpdate = localStorage.getItem('lastStreakUpdate');

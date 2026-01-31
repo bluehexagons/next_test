@@ -1,58 +1,90 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { ClickButton } from '@/app/_components/ClickButton';
 import styles from './clicker.module.css';
 
 export default function ClickerGame() {
-  const [clickCount, setClickCount] = useState(0);
+  const [clickCount, setClickCount] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('clickCount');
+      return saved ? parseInt(saved, 10) : 0;
+    }
+    return 0;
+  });
   const [isRateLimited, setIsRateLimited] = useState(false);
   const [ping, setPing] = useState<number | null>(null);
-  const [lastClickTime, setLastClickTime] = useState<Date | null>(null);
-  const [dailyStreak, setDailyStreak] = useState(0);
-  const [monthlyStreak, setMonthlyStreak] = useState(0);
-  const [yearlyStreak, setYearlyStreak] = useState(0);
-
-  // Load state from localStorage on mount
-  useEffect(() => {
-    const savedCount = localStorage.getItem('clickCount');
-    const savedLastClick = localStorage.getItem('lastClickTime');
-    const savedDailyStreak = localStorage.getItem('dailyStreak');
-    const savedMonthlyStreak = localStorage.getItem('monthlyStreak');
-    const savedYearlyStreak = localStorage.getItem('yearlyStreak');
-    const savedLastStreakUpdate = localStorage.getItem('lastStreakUpdate');
-
-    if (savedCount) setClickCount(parseInt(savedCount, 10));
-    if (savedLastClick) setLastClickTime(new Date(savedLastClick));
-    if (savedDailyStreak) setDailyStreak(parseInt(savedDailyStreak, 10));
-    if (savedMonthlyStreak) setMonthlyStreak(parseInt(savedMonthlyStreak, 10));
-    if (savedYearlyStreak) setYearlyStreak(parseInt(savedYearlyStreak, 10));
-
-    // Check and update streaks
-    if (savedLastStreakUpdate) {
-      const lastUpdate = new Date(savedLastStreakUpdate);
-      const now = new Date();
-      
-      // Check if we should increment streaks
-      const daysDiff = Math.floor((now.getTime() - lastUpdate.getTime()) / (1000 * 60 * 60 * 24));
-      const monthsDiff = (now.getFullYear() - lastUpdate.getFullYear()) * 12 + (now.getMonth() - lastUpdate.getMonth());
-      const yearsDiff = now.getFullYear() - lastUpdate.getFullYear();
-
-      if (daysDiff >= 1) {
-        setDailyStreak(prev => prev + 1);
-        localStorage.setItem('dailyStreak', String(dailyStreak + 1));
-      }
-      if (monthsDiff >= 1) {
-        setMonthlyStreak(prev => prev + 1);
-        localStorage.setItem('monthlyStreak', String(monthlyStreak + 1));
-      }
-      if (yearsDiff >= 1) {
-        setYearlyStreak(prev => prev + 1);
-        localStorage.setItem('yearlyStreak', String(yearlyStreak + 1));
-      }
+  const [lastClickTime, setLastClickTime] = useState<Date | null>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('lastClickTime');
+      return saved ? new Date(saved) : null;
     }
-  }, []);
+    return null;
+  });
+  const [dailyStreak, setDailyStreak] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('dailyStreak');
+      const savedLastUpdate = localStorage.getItem('lastStreakUpdate');
+      const baseStreak = saved ? parseInt(saved, 10) : 0;
+      
+      if (savedLastUpdate) {
+        const lastUpdate = new Date(savedLastUpdate);
+        const now = new Date();
+        const daysDiff = Math.floor((now.getTime() - lastUpdate.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (daysDiff >= 1) {
+          const newStreak = baseStreak + 1;
+          localStorage.setItem('dailyStreak', String(newStreak));
+          return newStreak;
+        }
+      }
+      return baseStreak;
+    }
+    return 0;
+  });
+  const [monthlyStreak, setMonthlyStreak] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('monthlyStreak');
+      const savedLastUpdate = localStorage.getItem('lastStreakUpdate');
+      const baseStreak = saved ? parseInt(saved, 10) : 0;
+      
+      if (savedLastUpdate) {
+        const lastUpdate = new Date(savedLastUpdate);
+        const now = new Date();
+        const monthsDiff = (now.getFullYear() - lastUpdate.getFullYear()) * 12 + (now.getMonth() - lastUpdate.getMonth());
+        
+        if (monthsDiff >= 1) {
+          const newStreak = baseStreak + 1;
+          localStorage.setItem('monthlyStreak', String(newStreak));
+          return newStreak;
+        }
+      }
+      return baseStreak;
+    }
+    return 0;
+  });
+  const [yearlyStreak, setYearlyStreak] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('yearlyStreak');
+      const savedLastUpdate = localStorage.getItem('lastStreakUpdate');
+      const baseStreak = saved ? parseInt(saved, 10) : 0;
+      
+      if (savedLastUpdate) {
+        const lastUpdate = new Date(savedLastUpdate);
+        const now = new Date();
+        const yearsDiff = now.getFullYear() - lastUpdate.getFullYear();
+        
+        if (yearsDiff >= 1) {
+          const newStreak = baseStreak + 1;
+          localStorage.setItem('yearlyStreak', String(newStreak));
+          return newStreak;
+        }
+      }
+      return baseStreak;
+    }
+    return 0;
+  });
 
   // Update streaks when clicking
   const updateStreaks = () => {
@@ -136,11 +168,11 @@ export default function ClickerGame() {
         <p>Click the button to increase your score!</p>
       </header>
 
-      <main className={styles.main}>
+      <main className={styles.main} suppressHydrationWarning>
         <section className={styles.stats}>
           <div className={styles.statBox}>
             <div className={styles.statLabel}>Clicks</div>
-            <div className={styles.statValue}>
+            <div className={styles.statValue} suppressHydrationWarning>
               {clickCount}
             </div>
           </div>
@@ -163,7 +195,7 @@ export default function ClickerGame() {
 
           <div className={styles.metricItem}>
             <span className={styles.metricLabel}>Last Click</span>
-            <span className={styles.metricValue}>
+            <span className={styles.metricValue} suppressHydrationWarning>
               {lastClickTime 
                 ? lastClickTime.toLocaleTimeString() 
                 : '--:--:--'}
@@ -172,7 +204,7 @@ export default function ClickerGame() {
 
           <div className={`${styles.metricItem} ${styles.streaksItem}`}>
             <span className={styles.metricLabel}>Streaks</span>
-            <div className={styles.streaksRow}>
+            <div className={styles.streaksRow} suppressHydrationWarning>
               <span className={`${styles.streakPill} ${dailyStreak > 1 ? styles.active : styles.inactive}`} title="Daily Streak">
                 D: <strong>{dailyStreak}</strong>
               </span>

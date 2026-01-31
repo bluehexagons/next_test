@@ -70,6 +70,15 @@ export default function Home() {
               /use-client — state and event handlers.
             </p>
           </Link>
+          <Link
+            className="card"
+            href="/clicker"
+          >
+            <h2 className="card-title">Clicker Game</h2>
+            <p className="card-text">
+              /clicker — interactive clicker game with 3D animations.
+            </p>
+          </Link>
         </section>
       </main>
     </div>

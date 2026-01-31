@@ -29,7 +29,7 @@ export default async function ClickerPage() {
           &larr; Home
         </Link>
       </nav>
-      <ClickerClient userEmail={session.user.email!} userName={session.user.name || session.user.email!} />
+      <ClickerClient userName={session.user.name || session.user.email!} />
     </div>
   );
 }

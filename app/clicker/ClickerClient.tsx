@@ -5,7 +5,6 @@ import { ClickButton } from '@/app/_components/ClickButton';
 import styles from './clicker.module.css';
 
 interface ClickerClientProps {
-  userEmail: string;
   userName: string;
 }
 
@@ -15,7 +14,7 @@ interface EntityData {
   modifiedTime?: Date | string;
 }
 
-export default function ClickerClient({ userEmail, userName }: ClickerClientProps) {
+export default function ClickerClient({ userName }: ClickerClientProps) {
   const [clickCount, setClickCount] = useState(0);
   const [isRateLimited, setIsRateLimited] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

@@ -36,6 +36,7 @@ export default function ClickerGame() {
         if (daysDiff >= 1) {
           const newStreak = baseStreak + 1;
           localStorage.setItem('dailyStreak', String(newStreak));
+          localStorage.setItem('lastStreakUpdate', now.toISOString());
           return newStreak;
         }
       }
@@ -57,6 +58,7 @@ export default function ClickerGame() {
         if (monthsDiff >= 1) {
           const newStreak = baseStreak + 1;
           localStorage.setItem('monthlyStreak', String(newStreak));
+          localStorage.setItem('lastStreakUpdate', now.toISOString());
           return newStreak;
         }
       }
@@ -78,6 +80,7 @@ export default function ClickerGame() {
         if (yearsDiff >= 1) {
           const newStreak = baseStreak + 1;
           localStorage.setItem('yearlyStreak', String(newStreak));
+          localStorage.setItem('lastStreakUpdate', now.toISOString());
           return newStreak;
         }
       }
@@ -106,23 +109,32 @@ export default function ClickerGame() {
       const monthsDiff = (now.getFullYear() - lastUpdateDate.getFullYear()) * 12 + (now.getMonth() - lastUpdateDate.getMonth());
       const yearsDiff = now.getFullYear() - lastUpdateDate.getFullYear();
 
+      // Only update lastStreakUpdate if we're incrementing at least one streak
+      let shouldUpdateTimestamp = false;
+
       if (daysDiff >= 1) {
         const newDailyStreak = dailyStreak + 1;
         setDailyStreak(newDailyStreak);
         localStorage.setItem('dailyStreak', String(newDailyStreak));
+        shouldUpdateTimestamp = true;
       }
       if (monthsDiff >= 1) {
         const newMonthlyStreak = monthlyStreak + 1;
         setMonthlyStreak(newMonthlyStreak);
         localStorage.setItem('monthlyStreak', String(newMonthlyStreak));
+        shouldUpdateTimestamp = true;
       }
       if (yearsDiff >= 1) {
         const newYearlyStreak = yearlyStreak + 1;
         setYearlyStreak(newYearlyStreak);
         localStorage.setItem('yearlyStreak', String(newYearlyStreak));
+        shouldUpdateTimestamp = true;
       }
       
-      localStorage.setItem('lastStreakUpdate', now.toISOString());
+      // Only update the timestamp if we incremented a streak
+      if (shouldUpdateTimestamp) {
+        localStorage.setItem('lastStreakUpdate', now.toISOString());
+      }
     }
   };
 
@@ -205,13 +217,13 @@ export default function ClickerGame() {
           <div className={`${styles.metricItem} ${styles.streaksItem}`}>
             <span className={styles.metricLabel}>Streaks</span>
             <div className={styles.streaksRow} suppressHydrationWarning>
-              <span className={`${styles.streakPill} ${dailyStreak > 1 ? styles.active : styles.inactive}`} title="Daily Streak">
+              <span className={`${styles.streakPill} ${dailyStreak >= 1 ? styles.active : styles.inactive}`} title="Daily Streak">
                 D: <strong>{dailyStreak}</strong>
               </span>
-              <span className={`${styles.streakPill} ${monthlyStreak > 1 ? styles.active : styles.inactive}`} title="Monthly Streak">
+              <span className={`${styles.streakPill} ${monthlyStreak >= 1 ? styles.active : styles.inactive}`} title="Monthly Streak">
                 M: <strong>{monthlyStreak}</strong>
               </span>
-              <span className={`${styles.streakPill} ${yearlyStreak > 1 ? styles.active : styles.inactive}`} title="Yearly Streak">
+              <span className={`${styles.streakPill} ${yearlyStreak >= 1 ? styles.active : styles.inactive}`} title="Yearly Streak">
                 Y: <strong>{yearlyStreak}</strong>
               </span>
             </div>
